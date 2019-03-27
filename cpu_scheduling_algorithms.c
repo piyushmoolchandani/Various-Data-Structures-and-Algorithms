@@ -1,7 +1,7 @@
 #include<stdio.h>
 #include<stdlib.h>
-#define N 3
 
+int N = 0;
 struct process
 {
     int id;
@@ -85,32 +85,6 @@ void fcfs(process * ready_queue[]);
 void sjf_non_pre_emptive(process * ready_queue[]);
 void sjf_pre_emptive(process * ready_queue[]);
 void round_robin(process * ready_queue[]);
-
-int main()
-{
-    process * ready_queue[N];
-    ready_queue[0] = create_process(0, 0, 60);
-    ready_queue[1] = create_process(0, 2, 18);
-    ready_queue[2] = create_process(0, 3, 25);
-    fcfs(ready_queue);
-    
-    ready_queue[0] = create_process(0, 0, 60);
-    ready_queue[1] = create_process(0, 2, 18);
-    ready_queue[2] = create_process(0, 3, 25);
-    sjf_non_pre_emptive(ready_queue);
-
-    ready_queue[0] = create_process(0, 0, 60);
-    ready_queue[1] = create_process(0, 2, 18);
-    ready_queue[2] = create_process(0, 3, 25);
-    sjf_pre_emptive(ready_queue);
-    
-    ready_queue[0] = create_process(0, 0, 60);
-    ready_queue[1] = create_process(0, 2, 18);
-    ready_queue[2] = create_process(0, 3, 25);
-    round_robin(ready_queue);
-    
-    qsort(ready_queue, N, sizeof(ready_queue[0]), for_arrival_time_sorting);
-}
 
 void fcfs(process * ready_queue[])
 {
@@ -229,9 +203,11 @@ void round_robin(process * ready_queue[])
     }
 
     int i = 0;
-    //int count = 0;
-    //int total = total_time / 5 + 20;
-    int flag[N] = {0};
+    int flag[N];
+    for (int i = 0; i < N; i++)
+    {
+        flag[i] = 0;
+    }
     for (int present_time = 5; present_time <= total_time; present_time += provide_next_burst(ready_queue[i] -> remaining_burst_time))
     {
 
@@ -254,4 +230,184 @@ void round_robin(process * ready_queue[])
     qsort(ready_queue, N, sizeof(ready_queue[0]), for_completion_time_sorting);
     print_queue(ready_queue);
     printf("\n");
+}
+
+int main()
+{
+    
+    process * ready_queue[N];
+    /*
+    ready_queue[0] = create_process(0, 0, 60);
+    ready_queue[1] = create_process(0, 2, 18);
+    ready_queue[2] = create_process(0, 3, 25);
+    fcfs(ready_queue);
+    
+    ready_queue[0] = create_process(0, 0, 60);
+    ready_queue[1] = create_process(0, 2, 18);
+    ready_queue[2] = create_process(0, 3, 25);
+    sjf_non_pre_emptive(ready_queue);
+
+    ready_queue[0] = create_process(0, 0, 60);
+    ready_queue[1] = create_process(0, 2, 18);
+    ready_queue[2] = create_process(0, 3, 25);
+    sjf_pre_emptive(ready_queue);
+    
+    ready_queue[0] = create_process(0, 0, 60);
+    ready_queue[1] = create_process(0, 2, 18);
+    ready_queue[2] = create_process(0, 3, 25);
+    round_robin(ready_queue);
+    
+    qsort(ready_queue, N, sizeof(ready_queue[0]), for_arrival_time_sorting);*/
+
+    FILE * fp;
+    fp = fopen("data.txt", "r");
+    char ch;
+
+    if (fp == NULL)
+        printf("Cannot open file.\n");
+
+    int i, j, k, sum, sum_1;
+    int t_count=0;
+
+	while((ch = getc(fp)) != EOF)
+	{
+		if(ch == '\n')
+		    N = N + 1;
+	}
+	fseek(fp, 0, SEEK_SET);
+	k = 0;
+	j = N;
+	while(j--)
+	{
+		i = 0;
+		sum = 0;
+		sum_1 = 0;
+
+		while((ch = getc(fp)) != '\n' )
+    	{
+			if(i <= 2)
+			{
+      			if(i == 1 && ch!=';')
+				{
+					ch = ch - '0';
+					sum = sum * 10 + ch;
+				}
+			
+				if(i == 2 && ch!=';')
+				{
+					ch = ch - '0';
+					sum_1 = sum_1 * 10 + ch;
+				}
+				
+				if(ch == ';')
+				i++;
+			}
+		}
+        ready_queue[k] = create_process(k, sum, sum_1);
+		k++;
+	}
+    fcfs(ready_queue);
+
+
+    fseek(fp, 0, SEEK_SET);
+	k = 0;
+	j = N;
+	while(j--)
+	{
+		i = 0;
+		sum = 0;
+		sum_1 = 0;
+
+		while((ch = getc(fp)) != '\n' )
+    	{
+			if(i <= 2)
+			{
+      			if(i == 1 && ch!=';')
+				{
+					ch = ch - '0';
+					sum = sum * 10 + ch;
+				}
+			
+				if(i == 2 && ch!=';')
+				{
+					ch = ch - '0';
+					sum_1 = sum_1 * 10 + ch;
+				}
+				
+				if(ch == ';')
+				i++;
+			}
+		}
+        ready_queue[k] = create_process(k, sum, sum_1);
+		k++;
+	}
+    sjf_non_pre_emptive(ready_queue);
+
+    fseek(fp, 0, SEEK_SET);
+	k = 0;
+	j = N;
+	while(j--)
+	{
+		i = 0;
+		sum = 0;
+		sum_1 = 0;
+
+		while((ch = getc(fp)) != '\n' )
+    	{
+			if(i <= 2)
+			{
+      			if(i == 1 && ch!=';')
+				{
+					ch = ch - '0';
+					sum = sum * 10 + ch;
+				}
+			
+				if(i == 2 && ch!=';')
+				{
+					ch = ch - '0';
+					sum_1 = sum_1 * 10 + ch;
+				}
+				
+				if(ch == ';')
+				i++;
+			}
+		}
+        ready_queue[k] = create_process(k, sum, sum_1);
+		k++;
+	}
+    sjf_pre_emptive(ready_queue);
+
+    fseek(fp, 0, SEEK_SET);
+	k = 0;
+	j = N;
+	while(j--)
+	{
+		i = 0;
+		sum = 0;
+		sum_1 = 0;
+
+		while((ch = getc(fp)) != '\n' )
+    	{
+			if(i <= 2)
+			{
+      			if(i == 1 && ch!=';')
+				{
+					ch = ch - '0';
+					sum = sum * 10 + ch;
+				}
+			
+				if(i == 2 && ch!=';')
+				{
+					ch = ch - '0';
+					sum_1 = sum_1 * 10 + ch;
+				}
+				
+				if(ch == ';')
+				i++;
+			}
+		}
+        ready_queue[k] = create_process(k, sum, sum_1);
+		k++;
+	}
+    round_robin(ready_queue);
 }
